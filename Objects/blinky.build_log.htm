@@ -1,0 +1,295 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Tool Versions:</h2>
+IDE-Version: µVision V5.36.0.0
+Copyright (C) 2021 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information:  ,   , LIC=----
+ 
+Tool Versions:
+Toolchain:       MDK-Lite  Version: 5.36.0.0
+Toolchain Path:  C:\Keil_v5\ARM\ARMCLANG\Bin
+C Compiler:      ArmClang.exe V6.16
+Assembler:       Armasm.exe V6.16
+Linker/Locator:  ArmLink.exe V6.16
+Library Manager: ArmAr.exe V6.16
+Hex Converter:   FromElf.exe V6.16
+CPU DLL:         SARMCM3.DLL V5.36.0.0
+Dialog DLL:      DCM.DLL V1.17.3.0
+Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V3.0.9.0
+Dialog DLL:      TCM.DLL V1.53.0.0
+ 
+<h2>Project:</h2>
+X:\Projects\Microcontroller Lab\Traffic USART\blinky.uvprojx
+Project File Date:  04/04/2023
+
+<h2>Output:</h2>
+*** Using Compiler 'V6.16', folder: 'C:\Keil_v5\ARM\ARMCLANG\Bin'
+Build target 'Target 1'
+main.c(1): warning: In file included from...
+./CLOCK.h(39): warning: // comments are not allowed in this language [-Wcomment]
+#define PLL_P 0 //0 to the sixteenth position (PLL=2)
+                ^
+main.c(18): warning: no previous extern declaration for non-static variable 'G' [-Wmissing-variable-declarations]
+uint32_t G = 10, Y = 2, R = 5, L = 8, monitor=3;
+         ^
+main.c(18): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+uint32_t G = 10, Y = 2, R = 5, L = 8, monitor=3;
+^
+main.c(18): warning: no previous extern declaration for non-static variable 'Y' [-Wmissing-variable-declarations]
+uint32_t G = 10, Y = 2, R = 5, L = 8, monitor=3;
+                 ^
+main.c(18): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+uint32_t G = 10, Y = 2, R = 5, L = 8, monitor=3;
+^
+main.c(18): warning: no previous extern declaration for non-static variable 'R' [-Wmissing-variable-declarations]
+uint32_t G = 10, Y = 2, R = 5, L = 8, monitor=3;
+                        ^
+main.c(18): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+uint32_t G = 10, Y = 2, R = 5, L = 8, monitor=3;
+^
+main.c(18): warning: no previous extern declaration for non-static variable 'L' [-Wmissing-variable-declarations]
+uint32_t G = 10, Y = 2, R = 5, L = 8, monitor=3;
+                               ^
+main.c(18): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+uint32_t G = 10, Y = 2, R = 5, L = 8, monitor=3;
+^
+main.c(18): warning: no previous extern declaration for non-static variable 'monitor' [-Wmissing-variable-declarations]
+uint32_t G = 10, Y = 2, R = 5, L = 8, monitor=3;
+                                      ^
+main.c(18): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+uint32_t G = 10, Y = 2, R = 5, L = 8, monitor=3;
+^
+main.c(19): warning: no previous extern declaration for non-static variable 'frame_period' [-Wmissing-variable-declarations]
+uint32_t frame_period = 100; /* ANIMATION FRAME TIME */
+         ^
+main.c(19): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+uint32_t frame_period = 100; /* ANIMATION FRAME TIME */
+^
+main.c(29): warning: no previous extern declaration for non-static variable 'counter' [-Wmissing-variable-declarations]
+uint32_t counter = 0;
+         ^
+main.c(29): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+uint32_t counter = 0;
+^
+main.c(35): warning: // comments are not allowed in this language [-Wcomment]
+    TIM6->PSC = 8999; //10khz frequency ....
+                      ^
+main.c(70): warning: no previous extern declaration for non-static variable 'logBuffer' [-Wmissing-variable-declarations]
+int logBuffer = 100;
+    ^
+main.c(70): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+int logBuffer = 100;
+^
+main.c(77): warning: implicit declaration of function 'UART_GetChar' [-Wimplicit-function-declaration]
+    ch = UART_GetChar(USART2);
+         ^
+main.c(77): warning: implicit conversion loses integer precision: 'int' to 'uint8_t' (aka 'unsigned char') [-Wimplicit-int-conversion]
+    ch = UART_GetChar(USART2);
+       ~ ^~~~~~~~~~~~~~~~~~~~
+main.c(80): warning: implicit conversion loses integer precision: 'int' to 'uint8_t' (aka 'unsigned char') [-Wimplicit-int-conversion]
+        ch = UART_GetChar(USART2);
+           ~ ^~~~~~~~~~~~~~~~~~~~
+main.c(89): warning: implicitly declaring library function 'sprintf' with type 'int (char *, const char *, ...)' [-Wimplicit-function-declaration]
+                sprintf(lrDetails, "\ntraffic light 1 G Y R %d %d %d %d", G, Y, R, L);
+                ^
+main.c(89): note: include the header <stdio.h> or explicitly provide a declaration for 'sprintf'
+main.c(94): warning: implicit declaration of function 'UART_SendString' [-Wimplicit-function-declaration]
+                UART_SendString(USART2, lrDetails);
+                ^
+main.c(91): warning: ISO C90 forbids mixing declarations and code [-Wdeclaration-after-statement]
+                char udDetails[100];
+                     ^
+main.c(108): warning: implicit declaration of function 'UART_SendString' [-Wimplicit-function-declaration]
+                UART_SendString(USART2, "\nMonitor: ");
+                ^
+main.c(111): warning: declaration shadows a variable in the global scope [-Wshadow]
+                int monitor;
+                    ^
+main.c(18): note: previous declaration is here
+uint32_t G = 10, Y = 2, R = 5, L = 8, monitor=3;
+                                      ^
+main.c(112): warning: implicitly declaring library function 'sscanf' with type 'int (const char *__restrict, const char *__restrict, ...)' [-Wimplicit-function-declaration]
+                sscanf(input_buffer, "%s %s %d", temp1, temp2, &monitor);
+                ^
+main.c(112): note: include the header <stdio.h> or explicitly provide a declaration for 'sscanf'
+main.c(118): warning: variable declaration in for loop is a C99-specific feature [-Wc99-extensions]
+                for(int id=2; id>=0; id--){
+                    ^
+main.c(118): warning: GCC does not allow variable declarations in for loop initializers before C99 [-Wgcc-compat]
+main.c(120): warning: implicit conversion changes signedness: 'unsigned int' to 'int' [-Wsign-conversion]
+                        int indx = (counter - (monitor*id)) % logBuffer;
+                            ~~~~   ~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~
+main.c(120): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
+                        int indx = (counter - (monitor*id)) % logBuffer;
+                                                            ~ ^~~~~~~~~
+main.c(120): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
+                        int indx = (counter - (monitor*id)) % logBuffer;
+                                            ~  ~~~~~~~^~~
+main.c(126): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
+                        sprintf(toPrint, "%d  traffic light 1 G Y B %d %d %d\n", (counter - (monitor*id)), logTrafficLR[indx][0],  logTrafficLR[indx][1],  logTrafficLR[indx][2]);
+                                                                                          ~  ~~~~~~~^~~
+main.c(130): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
+                        sprintf(toPrint, "%d  traffic light 2 G Y B %d %d %d\n", (counter - (monitor*id)), logTrafficUD[indx][0],  logTrafficUD[indx][1],  logTrafficUD[indx][2]);
+                                                                                          ~  ~~~~~~~^~~
+main.c(134): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
+                                sprintf(toPrint, "%d  traffic light left right heavy\n", (counter - (monitor*id)));
+                                                                                                  ~  ~~~~~~~^~~
+main.c(139): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
+                                sprintf(toPrint, "%d  traffic light top down heavy\n", (counter - (monitor*id)));
+                                                                                                ~  ~~~~~~~^~~
+main.c(110): warning: ISO C90 forbids mixing declarations and code [-Wdeclaration-after-statement]
+                char temp1[10], temp2[10];
+                     ^
+main.c(194): warning: implicitly declaring library function 'strcpy' with type 'char *(char *, const char *)' [-Wimplicit-function-declaration]
+                strcpy(input_buffer,"hello this gjgjhkgjhkgjg  is from input\n");
+                ^
+main.c(194): note: include the header <string.h> or explicitly provide a declaration for 'strcpy'
+main.c(204): warning: implicitly declaring library function 'strlen' with type 'unsigned int (const char *)' [-Wimplicit-function-declaration]
+                for (i = 0;i < strlen(input_buffer);i++){
+                               ^
+main.c(204): note: include the header <string.h> or explicitly provide a declaration for 'strlen'
+main.c(219): warning: implicit declaration of function 'UART_SendString' [-Wimplicit-function-declaration]
+        UART_SendString(USART2,output_buff);
+        ^
+main.c(192): warning: no previous prototype for function 'usart4to5' [-Wmissing-prototypes]
+void usart4to5(void){
+     ^
+main.c(192): note: declare 'static' if the function is not intended to be used outside of this translation unit
+void usart4to5(void){
+^
+static 
+main.c(236): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
+        return (rand() % (upper - lower + 1)) + lower;
+                ^~~~~~ ~
+main.c(240): warning: declaration shadows a variable in the global scope [-Wshadow]
+void RefreshLoad(uint32_t times, uint32_t loadL, uint32_t loadR, uint32_t loadU, uint32_t loadD, GPIO_InitTypeDef *carL, GPIO_InitTypeDef *carR, GPIO_InitTypeDef *carU, GPIO_InitTypeDef *carD, uint32_t frame_period, uint32_t GreenLRflag, uint32_t RedLRflag) {
+                                                                                                                                                                                                          ^
+main.c(19): note: previous declaration is here
+uint32_t frame_period = 100; /* ANIMATION FRAME TIME */
+         ^
+main.c(240): warning: unused parameter 'GreenLRflag' [-Wunused-parameter]
+void RefreshLoad(uint32_t times, uint32_t loadL, uint32_t loadR, uint32_t loadU, uint32_t loadD, GPIO_InitTypeDef *carL, GPIO_InitTypeDef *carR, GPIO_InitTypeDef *carU, GPIO_InitTypeDef *carD, uint32_t frame_period, uint32_t GreenLRflag, uint32_t RedLRflag) {
+                                                                                                                                                                                                                                 ^
+main.c(240): warning: unused parameter 'RedLRflag' [-Wunused-parameter]
+void RefreshLoad(uint32_t times, uint32_t loadL, uint32_t loadR, uint32_t loadU, uint32_t loadD, GPIO_InitTypeDef *carL, GPIO_InitTypeDef *carR, GPIO_InitTypeDef *carU, GPIO_InitTypeDef *carD, uint32_t frame_period, uint32_t GreenLRflag, uint32_t RedLRflag) {
+                                                                                                                                                                                                                                                       ^
+main.c(240): warning: no previous prototype for function 'RefreshLoad' [-Wmissing-prototypes]
+void RefreshLoad(uint32_t times, uint32_t loadL, uint32_t loadR, uint32_t loadU, uint32_t loadD, GPIO_InitTypeDef *carL, GPIO_InitTypeDef *carR, GPIO_InitTypeDef *carU, GPIO_InitTypeDef *carD, uint32_t frame_period, uint32_t GreenLRflag, uint32_t RedLRflag) {
+     ^
+main.c(240): note: declare 'static' if the function is not intended to be used outside of this translation unit
+void RefreshLoad(uint32_t times, uint32_t loadL, uint32_t loadR, uint32_t loadU, uint32_t loadD, GPIO_InitTypeDef *carL, GPIO_InitTypeDef *carR, GPIO_InitTypeDef *carU, GPIO_InitTypeDef *carD, uint32_t frame_period, uint32_t GreenLRflag, uint32_t RedLRflag) {
+^
+static 
+main.c(334): warning: implicit declaration of function 'UART2_Config' [-Wimplicit-function-declaration]
+        UART2_Config();
+        ^
+main.c(360): warning: initializer for aggregate is not a compile-time constant [-Wc99-extensions]
+        GPIO_InitTypeDef carR[] = {PA7, PA6, PA5};
+                                   ^~~
+main.c(369): warning: initializer for aggregate is not a compile-time constant [-Wc99-extensions]
+        GPIO_InitTypeDef carL[] = {PB13, PB14, PB15};
+                                   ^~~~
+main.c(380): warning: initializer for aggregate is not a compile-time constant [-Wc99-extensions]
+        GPIO_InitTypeDef carD[] = {PA9, PA12, PA11};
+                                   ^~~
+main.c(390): warning: initializer for aggregate is not a compile-time constant [-Wc99-extensions]
+        GPIO_InitTypeDef carU[] = {PA10, PB5, PA8};
+                                   ^~~~
+main.c(450): warning: implicit declaration of function 'UART_SendString' [-Wimplicit-function-declaration]
+        UART_SendString(USART2,"------------ Program Init ------------\n\n");
+        ^
+main.c(459): warning: implicit conversion changes signedness: 'int' to 'uint32_t' (aka 'unsigned int') [-Wsign-conversion]
+                RefreshLoad(1, loadL, loadR, loadU, loadD, carL,carR, carU, carD, frame_period, GreenLRflag, RedLRflag);
+                ~~~~~~~~~~~                                                                                  ^~~~~~~~~
+main.c(459): warning: implicit conversion changes signedness: 'int' to 'uint32_t' (aka 'unsigned int') [-Wsign-conversion]
+                RefreshLoad(1, loadL, loadR, loadU, loadD, carL,carR, carU, carD, frame_period, GreenLRflag, RedLRflag);
+                ~~~~~~~~~~~                                                                     ^~~~~~~~~~~
+main.c(556): warning: implicit conversion changes signedness: 'int' to 'uint32_t' (aka 'unsigned int') [-Wsign-conversion]
+                RefreshLoad(5, loadL, loadR, loadU, loadD, carL,carR, carU, carD, frame_period, GreenLRflag, RedLRflag);
+                ~~~~~~~~~~~                                                                                  ^~~~~~~~~
+main.c(556): warning: implicit conversion changes signedness: 'int' to 'uint32_t' (aka 'unsigned int') [-Wsign-conversion]
+                RefreshLoad(5, loadL, loadR, loadU, loadD, carL,carR, carU, carD, frame_period, GreenLRflag, RedLRflag);
+                ~~~~~~~~~~~                                                                     ^~~~~~~~~~~
+main.c(585): warning: implicit conversion changes signedness: 'unsigned int' to 'int' [-Wsign-conversion]
+                int indx = counter%logBuffer;
+                    ~~~~   ~~~~~~~^~~~~~~~~~
+main.c(585): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
+                int indx = counter%logBuffer;
+                                  ~^~~~~~~~~
+main.c(614): warning: implicit conversion changes signedness: 'int' to 'uint32_t' (aka 'unsigned int') [-Wsign-conversion]
+                RefreshLoad(2, loadL, loadR, loadU, loadD, carL,carR, carU, carD, frame_period, GreenLRflag, RedLRflag);
+                ~~~~~~~~~~~                                                                                  ^~~~~~~~~
+main.c(614): warning: implicit conversion changes signedness: 'int' to 'uint32_t' (aka 'unsigned int') [-Wsign-conversion]
+                RefreshLoad(2, loadL, loadR, loadU, loadD, carL,carR, carU, carD, frame_period, GreenLRflag, RedLRflag);
+                ~~~~~~~~~~~                                                                     ^~~~~~~~~~~
+main.c(472): warning: ISO C90 forbids mixing declarations and code [-Wdeclaration-after-statement]
+                uint32_t totalTime = G+Y+R;
+                         ^
+main.c(353): warning: ISO C90 forbids mixing declarations and code [-Wdeclaration-after-statement]
+        GPIO_InitTypeDef PA5 = {5, GPIO_MODE_OUTPUT, GPIO_NOPULL, GPIO_SPEED_FREQ_LOW, GPIOA}; GPIO_Init(GPIOA, &PA5);
+                         ^
+main.c(71): warning: no previous extern declaration for non-static variable 'logTrafficLR' [-Wmissing-variable-declarations]
+int logTrafficLR[100][3];
+    ^
+main.c(71): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+int logTrafficLR[100][3];
+^
+main.c(72): warning: no previous extern declaration for non-static variable 'logTrafficUD' [-Wmissing-variable-declarations]
+int logTrafficUD[100][3];
+    ^
+main.c(72): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+int logTrafficUD[100][3];
+^
+main.c(73): warning: no previous extern declaration for non-static variable 'logLoad' [-Wmissing-variable-declarations]
+int logLoad[100][2];
+    ^
+main.c(73): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+int logLoad[100][2];
+^
+main.c(232): warning: no previous extern declaration for non-static variable 'currentConfig' [-Wmissing-variable-declarations]
+char currentConfig[100];
+     ^
+main.c(232): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+char currentConfig[100];
+^
+58 warnings generated.
+compiling main.c...
+linking...
+Program Size: Code=21748 RO-data=1868 RW-data=28 ZI-data=5184  
+".\Objects\blinky.axf" - 0 Error(s), 58 Warning(s).
+
+<h2>Software Packages used:</h2>
+
+Package Vendor: ARM
+                http://www.keil.com/pack/ARM.CMSIS.5.9.0.pack
+                ARM.CMSIS.5.9.0
+                CMSIS (Common Microcontroller Software Interface Standard)
+   * Component: CORE Version: 5.6.0
+
+Package Vendor: Keil
+                https://www.keil.com/pack/Keil.STM32F4xx_DFP.2.17.0.pack
+                Keil.STM32F4xx_DFP.2.17.0
+                STMicroelectronics STM32F4 Series Device Support, Drivers and Examples
+   * Component: Startup Version: 2.6.3
+
+<h2>Collection of Component include folders:</h2>
+  .\RTE\_Target_1
+  C:\Users\red\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include
+  C:\Users\red\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.17.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include
+
+<h2>Collection of Component Files used:</h2>
+
+   * Component: ARM::CMSIS:CORE:5.6.0
+
+   * Component: Keil::Device:Startup:2.6.3
+      Source file:   MDK\Device\Source\ARM\STM32F446xx_OPT.s
+      Source file:   MDK\Device\Source\ARM\STM32F4xx_OTP.s
+      Include file:  Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h
+      Source file:   Drivers\CMSIS\Device\ST\STM32F4xx\Source\Templates\arm\startup_stm32f446xx.s
+      Source file:   Drivers\CMSIS\Device\ST\STM32F4xx\Source\Templates\system_stm32f4xx.c
+Build Time Elapsed:  00:00:01
+</pre>
+</body>
+</html>
