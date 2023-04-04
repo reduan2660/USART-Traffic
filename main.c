@@ -3,6 +3,8 @@
 #include "GPIO.h"
 #include <stdlib.h>
 
+/* Function Declaration */
+
 int sprintf(char *str, const char *string,...);
 char* strcpy(char* destination, const char* source);
 size_t strlen(const char *str);
@@ -25,6 +27,8 @@ uint8_t UART_GetChar(USART_TypeDef *);
 
 uint32_t random(void);
 void RefreshLoad(uint32_t times, uint32_t loadL, uint32_t loadR, uint32_t loadU, uint32_t loadD, GPIO_InitTypeDef *carL, GPIO_InitTypeDef *carR, GPIO_InitTypeDef *carU, GPIO_InitTypeDef *carD);
+
+/* Global State Variable */
 
 static uint32_t G = 10, Y = 2, R = 5, L = 8;
 static uint32_t frame_period = 100; /* ANIMATION FRAME TIME */
@@ -108,7 +112,7 @@ void printStatus(void){
 
 void parseCommand(void){
 	
-//	UART_SendString(USART2, input_buffer);
+	UART_SendString(USART2, output_buff);
 	
 	/* READ */
 	if(input_buffer[0] == 'r' && input_buffer[1] == 'e' && input_buffer[2] == 'a' && input_buffer[3] == 'd'){
@@ -231,16 +235,10 @@ void UART5_IRQHandler(void){
 
 void usart4to5(void){
 		uint32_t i = 0;
-		strcpy(input_buffer,"hello this gjgjhkgjhkgjg  is from input\n");
-		strcpy(output_buff,"ekhon kaj kore nai\n");
-		//sending data from input_buffer array to output_buff array using UART
-		//data goes from uart4 to uart5 and gets stored in output_buff
-
-
+		strcpy(output_buff,"");
 		in_idx = 0;
 		out_idx = 0;
 		//transmit data from UART4 to UART5
-
 		for (i = 0;i < strlen(input_buffer);i++){
 			/*Enable Interrupt*/
 			//use UART5->CR1 to transmit data from UART5 to UART4
@@ -249,13 +247,8 @@ void usart4to5(void){
 			ms_delay(1);
 			in_idx++;
 			out_idx++;
-}
-	
-	
+	}
 	output_buff[out_idx++] = '\0';
-	
-	//transmitted data is st
-	
 	UART_SendString(USART2,output_buff);
 }
 
@@ -266,9 +259,6 @@ void usart4to5(void){
 
 
 /* --------------------------------------- Traffic --------------------------------------- */
-
-
-
 // static char currentConfig[100];
 
 uint32_t random(void){
@@ -372,8 +362,8 @@ int main(void){
 	sysInit();
 	TIM6_Config();
 	UART2_Config();
-//	UART4_Config();
-//	UART5_Config();
+	UART4_Config();
+	UART5_Config();
 	
 	NVIC_SetPriority(USART2_IRQn, 1);
 	NVIC_EnableIRQ(USART2_IRQn);
@@ -386,6 +376,7 @@ int main(void){
 	RCC->AHB1ENR |= 1; /* PORT A */
 	RCC->AHB1ENR |= 1 << 1; /* PORT B */
 	RCC->AHB1ENR |= 1 << 2; /* PORT C */
+	RCC->AHB1ENR |= 1 << 7; /* PORT H */
 	
 	
 	
@@ -431,7 +422,7 @@ int main(void){
 	// GPIO_InitTypeDef carU[] = {PA13, PA14, PA15};
 	
 	/* LOAD UP SIGNAL INPUT */
-	GPIO_InitTypeDef IN_LoadU  =  {12, GPIO_MODE_INPUT, GPIO_NOPULL, GPIO_SPEED_FREQ_LOW, GPIOC}; GPIO_Init(GPIOC, &IN_LoadU); // C12
+	GPIO_InitTypeDef IN_LoadU  =  {11, GPIO_MODE_INPUT, GPIO_NOPULL, GPIO_SPEED_FREQ_LOW, GPIOC}; GPIO_Init(GPIOC, &IN_LoadU); // C11
 	
 	
 	/* LEFT RIGHT SIGNAL LED */
@@ -444,9 +435,9 @@ int main(void){
 	GPIO_InitTypeDef IN_GreenLR  =  {1, GPIO_MODE_INPUT, GPIO_NOPULL, GPIO_SPEED_FREQ_LOW, GPIOB}; GPIO_Init(GPIOB, &IN_GreenLR); // B1
 	
 	/* UP DOWN SIGNAL LED */
-	GPIO_InitTypeDef RedUD    =  { 0, GPIO_MODE_OUTPUT, GPIO_NOPULL, GPIO_SPEED_FREQ_LOW, GPIOA}; GPIO_Init(GPIOA, &RedUD);
-	GPIO_InitTypeDef YellowUD =  { 1, GPIO_MODE_OUTPUT, GPIO_NOPULL, GPIO_SPEED_FREQ_LOW, GPIOA}; GPIO_Init(GPIOA, &YellowUD);	
-	GPIO_InitTypeDef GreenUD  =  { 4, GPIO_MODE_OUTPUT, GPIO_NOPULL, GPIO_SPEED_FREQ_LOW, GPIOA}; GPIO_Init(GPIOA, &GreenUD );
+	GPIO_InitTypeDef RedUD    =  { 9, GPIO_MODE_OUTPUT, GPIO_NOPULL, GPIO_SPEED_FREQ_LOW, GPIOC}; GPIO_Init(GPIOC, &RedUD); // C9
+	GPIO_InitTypeDef YellowUD =  { 8, GPIO_MODE_OUTPUT, GPIO_NOPULL, GPIO_SPEED_FREQ_LOW, GPIOB}; GPIO_Init(GPIOB, &YellowUD);	// B8
+	GPIO_InitTypeDef GreenUD  =  { 4, GPIO_MODE_OUTPUT, GPIO_NOPULL, GPIO_SPEED_FREQ_LOW, GPIOA}; GPIO_Init(GPIOA, &GreenUD ); // A4
 	
 	/* UP DOWN SIGNAL INPUT */
 	GPIO_InitTypeDef IN_RedUD    =  {3, GPIO_MODE_INPUT, GPIO_NOPULL, GPIO_SPEED_FREQ_LOW, GPIOC}; GPIO_Init(GPIOC, &IN_RedUD); // C3
@@ -502,6 +493,8 @@ int main(void){
 		/* COMMAND HANDLING */
 		if(strlen(input_buffer)){
 //			UART_SendString(USART2,"\nCOMMAND RECEIVED \n");
+			// SENDING COMMAND TO UART6 (Field Machine)
+			usart4to5();
 			parseCommand();
 			strcpy(input_buffer, "");
 		}
