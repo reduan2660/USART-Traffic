@@ -1,0 +1,22 @@
+trafic light x[1,2] G Y R w y z u
+x - traffic light number
+w y z - duration of ON in seconds
+u - 
+
+
+traffic monitor X
+X - interval of traffic status mointoring
+
+
+read [traffic light] x[1,2]
+displays the current configuration of the whole system.
+
+
+
+trafic light 1 G  Y R 10 
+		   10 2 5 10
+
+--- CMD ---
+read !
+traffic light 1 G Y R 2 1 3 3 !
+traffic monitor 3 !
