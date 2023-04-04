@@ -28,7 +28,6 @@
  * SUCH DAMAGE.
  */
 
-
 #ifndef __USART_H
 #define __USART_H
 #ifdef __cplusplus
@@ -48,6 +47,8 @@ uint8_t _USART_READ_STR(USART_TypeDef*,uint8_t *,uint16_t);
 
 // USART 2 Configuration
 void UART2_Config(void);
+void UART4_Config(void);
+void UART5_Config(void);
 //uint8_t * convert(uint32_t,uint8_t);
 
 

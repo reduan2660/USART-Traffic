@@ -3,6 +3,12 @@
 #include "GPIO.h"
 #include <stdlib.h>
 
+int sprintf(char *str, const char *string,...);
+char* strcpy(char* destination, const char* source);
+size_t strlen(const char *str);
+int sscanf(const char *str, const char *format, ...);
+
+
 void TIM6_Config(void);
 void TIM6_DAC_IRQHandler(void);
 
@@ -12,11 +18,16 @@ void USART2_IRQHandler(void);
 void getString(void);
 void parseCommand(void);
 void printStatus(void);
+void usart4to5(void);
+void UART_SendString(USART_TypeDef *,const char*);
+void UART2_Config(void);
+uint8_t UART_GetChar(USART_TypeDef *);
 
 uint32_t random(void);
+void RefreshLoad(uint32_t times, uint32_t loadL, uint32_t loadR, uint32_t loadU, uint32_t loadD, GPIO_InitTypeDef *carL, GPIO_InitTypeDef *carR, GPIO_InitTypeDef *carU, GPIO_InitTypeDef *carD);
 
-uint32_t G = 10, Y = 2, R = 5, L = 8, monitor=3;
-uint32_t frame_period = 100; /* ANIMATION FRAME TIME */
+static uint32_t G = 10, Y = 2, R = 5, L = 8;
+static uint32_t frame_period = 100; /* ANIMATION FRAME TIME */
 static GPIO_PinState high 	= GPIO_PIN_SET;
 static GPIO_PinState low 	= GPIO_PIN_RESET;
 
@@ -26,7 +37,7 @@ static GPIO_PinState low 	= GPIO_PIN_RESET;
 #define TIM6_CR1_CEN ((uint32_t)0x0001)
 #define TIM6_SR_UIF ((uint32_t)0x0001)
 
-uint32_t counter = 0;
+static uint32_t counter = 0;
 
 
 void TIM6_Config(void) {
@@ -67,10 +78,10 @@ void TIM6_DAC_IRQHandler(void) {
 static char input_buffer[50],output_buff[50];
 static uint32_t in_idx,out_idx;
 
-int logBuffer = 500;
-int logTrafficLR[500][3];
-int logTrafficUD[500][3];
-int logLoad[500][2];
+static int logBuffer = 500;
+static int logTrafficLR[500][3];
+static int logTrafficUD[500][3];
+static int logLoad[500][2];
 
 void getString(void){
     uint8_t ch,idx = 0;
@@ -119,26 +130,28 @@ void parseCommand(void){
 		/* 12 Timestamps */
 		for(int id=2; id>=0; id--){
 			// logTrafficLR
-			int indx = (counter - (monitor*id)) % logBuffer;
+			uint32_t indx = (counter - ( ((uint32_t)monitor)* ((uint32_t)id))) % ((uint32_t)logBuffer);
 			
 //			sprintf(temp1, "%d\n", indx);
 //			UART_SendString(USART2, temp1);
 			
 			char toPrint[200];
-			sprintf(toPrint, "%d  traffic light 1 G Y B %d %d %d\n", (counter - (monitor*id)), logTrafficLR[indx][0],  logTrafficLR[indx][1],  logTrafficLR[indx][2]);
+			
+			int serial = (int)counter - (int)( ((uint32_t)monitor) *  ((uint32_t)id)  );
+			sprintf(toPrint, "%d  traffic light 1 G Y B %d %d %d\n", serial, logTrafficLR[indx][0],  logTrafficLR[indx][1],  logTrafficLR[indx][2]);
 			UART_SendString(USART2, toPrint);
 			
 			
-			sprintf(toPrint, "%d  traffic light 2 G Y B %d %d %d\n", (counter - (monitor*id)), logTrafficUD[indx][0],  logTrafficUD[indx][1],  logTrafficUD[indx][2]);
+			sprintf(toPrint, "%d  traffic light 2 G Y B %d %d %d\n", serial, logTrafficUD[indx][0],  logTrafficUD[indx][1],  logTrafficUD[indx][2]);
 			UART_SendString(USART2, toPrint);
 			
 			if(logLoad[indx][0]){
-				sprintf(toPrint, "%d  traffic light left right heavy\n", (counter - (monitor*id)));
+				sprintf(toPrint, "%d  traffic light left right heavy\n", serial);
 				UART_SendString(USART2, toPrint);
 			}
 			
 			if(logLoad[indx][1]){
-				sprintf(toPrint, "%d  traffic light top down heavy\n", (counter - (monitor*id)));
+				sprintf(toPrint, "%d  traffic light top down heavy\n", serial);
 				UART_SendString(USART2, toPrint);
 			}
 			
@@ -153,7 +166,7 @@ void parseCommand(void){
 //		UART_SendString(USART2, "\nConfig\n");
 		
 		char temp[100];
-		int direction, newG, newY, newR, newU;
+		uint32_t direction, newG, newY, newR, newU;
 		sscanf(input_buffer, "%s %s %d %s %s %s %d %d %d %d", temp, temp, &direction, temp, temp, temp, &newG, &newY, &newR, &newU);
 //		sprintf(temp, "Updated Value: %d %d %d %d", newG, newY, newR, newU);
 //		UART_SendString(USART2, temp);
@@ -256,15 +269,15 @@ void usart4to5(void){
 
 
 
-char currentConfig[100];
+// static char currentConfig[100];
 
 uint32_t random(void){
 	uint32_t upper = 1, lower = 0;
-	return (rand() % (upper - lower + 1)) + lower;
+	return ((uint32_t)rand() % (upper - lower + 1)) + lower;
 	
 }
 
-void RefreshLoad(uint32_t times, uint32_t loadL, uint32_t loadR, uint32_t loadU, uint32_t loadD, GPIO_InitTypeDef *carL, GPIO_InitTypeDef *carR, GPIO_InitTypeDef *carU, GPIO_InitTypeDef *carD, uint32_t frame_period, uint32_t GreenLRflag, uint32_t RedLRflag) {
+void RefreshLoad(uint32_t times, uint32_t loadL, uint32_t loadR, uint32_t loadU, uint32_t loadD, GPIO_InitTypeDef *carL, GPIO_InitTypeDef *carR, GPIO_InitTypeDef *carU, GPIO_InitTypeDef *carD) {
 	while(times--){
 		uint32_t cari = 0;
 
@@ -483,7 +496,7 @@ int main(void){
 	{
 	// ---------------------------- LOOOOOOOOP -------------------------------	
 		
-		RefreshLoad(1, loadL, loadR, loadU, loadD, carL,carR, carU, carD, frame_period, GreenLRflag, RedLRflag);
+		RefreshLoad(1, loadL, loadR, loadU, loadD, carL,carR, carU, carD);
 		
 		
 		/* COMMAND HANDLING */
@@ -580,7 +593,7 @@ int main(void){
 		
 		
 		
-		RefreshLoad(5, loadL, loadR, loadU, loadD, carL,carR, carU, carD, frame_period, GreenLRflag, RedLRflag);
+		RefreshLoad(5, loadL, loadR, loadU, loadD, carL,carR, carU, carD);
 		
 		// on the side green is active, decrease load one by one
 		// --------------------------------------------------------
@@ -609,7 +622,7 @@ int main(void){
 		
 		
 		/* LOG */
-		int indx = counter%logBuffer;
+		uint32_t indx = counter% ((uint32_t)logBuffer);
 		
 //		char log[100];
 //		sprintf(log, "%d %d %d %d %d\n", counter, indx, GreenLRflag, YellowLRflag, RedLRflag);
@@ -638,7 +651,7 @@ int main(void){
 		
 		/* LOG */
 		
-		RefreshLoad(2, loadL, loadR, loadU, loadD, carL,carR, carU, carD, frame_period, GreenLRflag, RedLRflag);
+		RefreshLoad(2, loadL, loadR, loadU, loadD, carL,carR, carU, carD);
 		
 	// ---------------------------- LOOOOOOOOP -------------------------------
 	}
