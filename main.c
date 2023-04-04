@@ -23,6 +23,8 @@ void printStatus(void);
 void usart4to5(void);
 void UART_SendString(USART_TypeDef *,const char*);
 void UART2_Config(void);
+void UART4_Config(void);
+void UART5_Config(void);
 uint8_t UART_GetChar(USART_TypeDef *);
 
 uint32_t random(void);
@@ -79,7 +81,7 @@ void TIM6_DAC_IRQHandler(void) {
 
 /* --------------------------------------- UASRT --------------------------------------- */
 
-static char input_buffer[50],output_buff[50];
+static char input_buffer[100],output_buff[100];
 static uint32_t in_idx,out_idx;
 
 static int logBuffer = 500;
@@ -112,10 +114,10 @@ void printStatus(void){
 
 void parseCommand(void){
 	
-	UART_SendString(USART2, output_buff);
+//	UART_SendString(USART2, output_buff);
 	
 	/* READ */
-	if(input_buffer[0] == 'r' && input_buffer[1] == 'e' && input_buffer[2] == 'a' && input_buffer[3] == 'd'){
+	if(output_buff[0] == 'r' && output_buff[1] == 'e' && output_buff[2] == 'a' && output_buff[3] == 'd'){
 		printStatus();
 	}
 	
@@ -126,7 +128,7 @@ void parseCommand(void){
 		
 		char temp1[10], temp2[10];
 		int monitor;
-		sscanf(input_buffer, "%s %s %d", temp1, temp2, &monitor);
+		sscanf(output_buff, "%s %s %d", temp1, temp2, &monitor);
 		
 		sprintf(temp1, "%d\n", monitor);
 		UART_SendString(USART2, temp1);
@@ -171,7 +173,7 @@ void parseCommand(void){
 		
 		char temp[100];
 		uint32_t direction, newG, newY, newR, newU;
-		sscanf(input_buffer, "%s %s %d %s %s %s %d %d %d %d", temp, temp, &direction, temp, temp, temp, &newG, &newY, &newR, &newU);
+		sscanf(output_buff, "%s %s %d %s %s %s %d %d %d %d", temp, temp, &direction, temp, temp, temp, &newG, &newY, &newR, &newU);
 //		sprintf(temp, "Updated Value: %d %d %d %d", newG, newY, newR, newU);
 //		UART_SendString(USART2, temp);
 		
@@ -249,7 +251,7 @@ void usart4to5(void){
 			out_idx++;
 	}
 	output_buff[out_idx++] = '\0';
-	UART_SendString(USART2,output_buff);
+//	UART_SendString(USART2,output_buff);
 }
 
 
