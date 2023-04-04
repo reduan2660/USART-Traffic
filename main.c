@@ -67,10 +67,10 @@ void TIM6_DAC_IRQHandler(void) {
 static char input_buffer[50],output_buff[50];
 static uint32_t in_idx,out_idx;
 
-int logBuffer = 100;
-int logTrafficLR[100][3];
-int logTrafficUD[100][3];
-int logLoad[100][2];
+int logBuffer = 500;
+int logTrafficLR[500][3];
+int logTrafficUD[500][3];
+int logLoad[500][2];
 
 void getString(void){
     uint8_t ch,idx = 0;
@@ -85,10 +85,10 @@ void getString(void){
 }
 
 void printStatus(void){
-		char lrDetails[100];
+		char lrDetails[200];
 		sprintf(lrDetails, "\ntraffic light 1 G Y R %d %d %d %d", G, Y, R, L);
 		
-		char udDetails[100];
+		char udDetails[200];
 		sprintf(udDetails, "\ntraffic light 2 G Y R %d %d %d %d\n", R, Y, G, L);
 		
 		UART_SendString(USART2, lrDetails);
@@ -96,6 +96,8 @@ void printStatus(void){
 }
 
 void parseCommand(void){
+	
+//	UART_SendString(USART2, input_buffer);
 	
 	/* READ */
 	if(input_buffer[0] == 'r' && input_buffer[1] == 'e' && input_buffer[2] == 'a' && input_buffer[3] == 'd'){
@@ -105,7 +107,7 @@ void parseCommand(void){
 	/* Monitor */
 	else if(input_buffer[8] == 'm'){
 		
-		UART_SendString(USART2, "\nMonitor: ");
+//		UART_SendString(USART2, "\nMonitor: ");
 		
 		char temp1[10], temp2[10];
 		int monitor;
@@ -144,6 +146,31 @@ void parseCommand(void){
 		}
 	}	
 	
+
+
+	/* Config */
+	else if(input_buffer[8] == 'l'){
+//		UART_SendString(USART2, "\nConfig\n");
+		
+		char temp[100];
+		int direction, newG, newY, newR, newU;
+		sscanf(input_buffer, "%s %s %d %s %s %s %d %d %d %d", temp, temp, &direction, temp, temp, temp, &newG, &newY, &newR, &newU);
+//		sprintf(temp, "Updated Value: %d %d %d %d", newG, newY, newR, newU);
+//		UART_SendString(USART2, temp);
+		
+		if(direction == 1){
+			G = newG; Y = newY; R = newR; L = newU;
+		}
+		else if(direction == 1){
+			G = newR; Y = newY; R = newG; L = newU;
+		}
+		
+//		sprintf(temp, "Updated Value: %d %d %d %d", G, Y, R, L);
+//		UART_SendString(USART2, temp);
+		
+		UART_SendString(USART2, "\nConfig Updated\n");
+		
+	}
 }
 
 void USART2_IRQHandler(void){
@@ -461,7 +488,7 @@ int main(void){
 		
 		/* COMMAND HANDLING */
 		if(strlen(input_buffer)){
-			UART_SendString(USART2,"\nCOMMAND RECEIVED -- ");
+//			UART_SendString(USART2,"\nCOMMAND RECEIVED \n");
 			parseCommand();
 			strcpy(input_buffer, "");
 		}
