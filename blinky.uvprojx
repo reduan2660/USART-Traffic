@@ -438,6 +438,11 @@
               <FileType>1</FileType>
               <FilePath>.\USART.c</FilePath>
             </File>
+            <File>
+              <FileName>TIMER.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\TIMER.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
